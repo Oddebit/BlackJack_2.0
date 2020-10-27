@@ -1,11 +1,11 @@
 package be.oddebit.objects;
 
-public class StackManagement {
+public class BetStack {
 
     private int stack;
     private int bet;
 
-    public StackManagement(int stack) {
+    public BetStack(int stack) {
 
         this.stack = stack;
     }
@@ -13,11 +13,6 @@ public class StackManagement {
     public int getStack() {
 
         return stack;
-    }
-
-    public void setStack(int stack) {
-
-        this.stack = stack;
     }
 
     public void setBet(int bet) {

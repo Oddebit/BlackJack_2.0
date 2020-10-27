@@ -1,7 +1,7 @@
 package be.oddebit.ui;
 
 import be.oddebit.objects.Hand;
-import be.oddebit.objects.StackManagement;
+import be.oddebit.objects.BetStack;
 
 import java.util.Scanner;
 
@@ -10,19 +10,32 @@ public class Terminal {
     static Scanner scanner = new Scanner(System.in);
 
     public static void sayNewGame() {
-        System.out.println("- NEW GAME -");
+        System.out.println("\n\n--- NEW GAME ---");
     }
 
-    public static int askBet(StackManagement stack) {
+    public static int askBet(BetStack stack) {
 
         System.out.println("Your stack : " + stack.getStack());
         System.out.println("What is your bet ? (1 - 500)");
         int input = scanner.nextInt();
 
+        while (input > stack.getStack()) {
+
+            System.out.println("Current stack : " + stack.getStack() + ". Do not bet more.");
+            input = scanner.nextInt();
+        }
+
+        while (0 > input || input > 500) {
+
+            System.out.println("Please bet between 1 and 500.");
+            input = scanner.nextInt();
+        }
+
         return input;
+
     }
 
-    public static boolean restart() {
+    public static boolean askRestart() {
 
         System.out.println("Press '1' to restart.");
         int input = scanner.nextInt();
@@ -32,7 +45,7 @@ public class Terminal {
 
     public static void sayDeal() {
 
-        System.out.println("\n--- Deal ---");
+        System.out.println("\n- Deal -");
     }
 
     public static void showHand(Hand hand, boolean firstOnly) {
@@ -52,7 +65,7 @@ public class Terminal {
         return input == 1;
     }
 
-    public static void saySplitHand(Hand hand) {
+    public static void sayName(Hand hand) {
 
         System.out.println(hand.getOwner());
     }
@@ -78,7 +91,7 @@ public class Terminal {
     }
 
     public static void blackJack(Hand hand) {
-        System.out.println("Bruh! Black Jack for " + hand.getOwner() + ".");
+        System.out.println("Black Jack for " + hand.getOwner() + "!");
     }
 
 }

@@ -2,7 +2,7 @@ package be.oddebit.play;
 
 import be.oddebit.objects.Deck;
 import be.oddebit.objects.Hand;
-import be.oddebit.objects.StackManagement;
+import be.oddebit.objects.BetStack;
 import be.oddebit.ui.Terminal;
 
 public class Game {
@@ -15,11 +15,11 @@ public class Game {
     Hand splitHand1;
     Hand splitHand2;
 
-    StackManagement stack;
+    BetStack stack;
 
     public Game(int stack) {
 
-        this.stack = new StackManagement(stack);
+        this.stack = new BetStack(stack);
 
         boolean play = true;
         while (play) {
@@ -30,13 +30,6 @@ public class Game {
             this.stack.setBet(Terminal.askBet(this.stack));
             deal();
 
-            if (player.getScore() == 21) {
-
-                this.stack.receivesBet(2);
-                Terminal.blackJack(player);
-                play = Terminal.restart();
-                continue;
-            }
 
             if (splitCondition() && Terminal.askSplit()) {
                 splitProcedure();
@@ -44,7 +37,7 @@ public class Game {
                 procedure();
             }
 
-            play = Terminal.restart();
+            play = Terminal.askRestart();
 
         }
 
@@ -63,6 +56,12 @@ public class Game {
     }
 
     private void procedure() {
+
+        if (player.getScore() == 21) {
+
+            this.stack.receivesBet(2);
+            Terminal.blackJack(player);
+        }
 
         hitOrStand(player);
 
@@ -120,7 +119,7 @@ public class Game {
 
     private void hitOrStand(Hand hand) {
 
-        Terminal.saySplitHand(hand);
+        Terminal.sayName(hand);
         boolean hit = true;
         while (hit && hand.getScore() < 21) {
 
@@ -149,7 +148,7 @@ public class Game {
             stack.receivesBet(0);
             Terminal.draw(hand);
         } else {
-            stack.receivesBet(-1);
+            stack.receivesBet((-1));
             Terminal.lose(hand);
         }
 
