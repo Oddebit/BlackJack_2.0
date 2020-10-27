@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Deck {
 
-    private ArrayList<Card> deck = new ArrayList<Card>();
+    private ArrayList<Card> deck = new ArrayList<>();
 
     public Deck(int numberOfDecks) {
 
@@ -18,7 +18,6 @@ public class Deck {
                 deck.add(new Card(i + 1));
             }
         }
-
     }
 
     public Card removeCard() {
@@ -29,7 +28,4 @@ public class Deck {
         return this.deck.remove(index);
     }
 
-    public int getSize() {
-        return deck.size();
-    }
 }

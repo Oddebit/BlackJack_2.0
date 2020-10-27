@@ -1,33 +1,31 @@
 package be.oddebit.play;
 
 import be.oddebit.objects.Deck;
-import be.oddebit.objects.Hand;
-import be.oddebit.objects.BetStack;
+import be.oddebit.objects.Player;
 import be.oddebit.ui.Terminal;
 
 public class Game {
 
     Deck deck;
 
-    Hand player;
-    Hand dealer;
+    public Player currentPlayer;
+    Player dealer;
 
-    Hand splitHand1;
-    Hand splitHand2;
-
-    BetStack stack;
+    Player splitHand1;
+    Player splitHand2;
 
     public Game(int stack) {
 
-        this.stack = new BetStack(stack);
+        this.currentPlayer = new Player("Player", stack);
+        this.dealer = new Player("Dealer", 0);
 
         boolean play = true;
         while (play) {
 
-            this.deck  = new Deck(6);
+            this.deck = new Deck(6);
 
             Terminal.sayNewGame();
-            this.stack.setBet(Terminal.askBet(this.stack));
+            this.currentPlayer.setBet(Terminal.askBet(this.currentPlayer));
             deal();
 
 
@@ -47,33 +45,33 @@ public class Game {
 
         Terminal.sayDeal();
 
-        this.player = new Hand("Player", deck.removeCard(), deck.removeCard());
-        this.dealer = new Hand("Dealer", deck.removeCard(), deck.removeCard());
+        this.currentPlayer.receivesCard(deck.removeCard(), deck.removeCard());
+        this.dealer.receivesCard(deck.removeCard(), deck.removeCard());
 
-        Terminal.showHand(player, false);
+        Terminal.showHand(currentPlayer, false);
         Terminal.showHand(dealer, true);
 
     }
 
     private void procedure() {
 
-        if (player.getScore() == 21) {
+        if (currentPlayer.getScore() == 21) {
 
-            this.stack.receivesBet(2);
-            Terminal.blackJack(player);
+            this.currentPlayer.receivesBet(2);
+            Terminal.blackJack(currentPlayer);
         }
 
-        hitOrStand(player);
+        hitOrStand(currentPlayer);
 
-        if (player.getScore() > 21) {
+        if (currentPlayer.getScore() > 21) {
 
-            Terminal.lose(player);
+            Terminal.lose(currentPlayer);
 
         } else {
 
             dealerHitOrStand();
             Terminal.showHand(dealer, false);
-            whoWins(player);
+            whoWins(currentPlayer);
 
         }
 
@@ -81,7 +79,7 @@ public class Game {
 
     private boolean splitCondition() {
 
-        return player.getCard(0).getFace().equals(player.getCard(1).getFace());
+        return currentPlayer.getCard(0).getFace().equals(currentPlayer.getCard(1).getFace());
     }
 
     private void splitProcedure() {
@@ -93,7 +91,7 @@ public class Game {
 
         if (splitHand1.getScore() > 21 && splitHand2.getScore() > 21) {
 
-            Terminal.lose(player);
+            Terminal.lose(currentPlayer);
 
         } else {
 
@@ -103,13 +101,18 @@ public class Game {
             whoWins(splitHand1);
             whoWins(splitHand2);
 
+            this.currentPlayer.addStack(splitHand1.getStack(), splitHand1.getStack());
+
         }
     }
 
     private void splitDeal() {
 
-        this.splitHand1 = new Hand("First split hand", player.getCard(0), deck.removeCard());
-        this.splitHand2 = new Hand("Second split hand", player.getCard(1), deck.removeCard());
+        this.splitHand1 = new Player("First split hand", 0);
+        splitHand1.receivesCard(currentPlayer.getCard(0), deck.removeCard());
+
+        this.splitHand2 = new Player("Second split hand", 0);
+        splitHand2.receivesCard(currentPlayer.getCard(1), deck.removeCard());
 
         Terminal.showHand(splitHand1, false);
         Terminal.showHand(splitHand2, false);
@@ -117,15 +120,15 @@ public class Game {
     }
 
 
-    private void hitOrStand(Hand hand) {
+    private void hitOrStand(Player player) {
 
-        Terminal.sayName(hand);
+        Terminal.sayName(player);
         boolean hit = true;
-        while (hit && hand.getScore() < 21) {
+        while (hit && player.getScore() < 21) {
 
             hit = Terminal.askCard();
-            if (hit) hand.receivesCard(deck.removeCard());
-            Terminal.showHand(hand, false);
+            if (hit) player.receivesCard(deck.removeCard());
+            Terminal.showHand(player, false);
         }
 
     }
@@ -139,17 +142,17 @@ public class Game {
 
     }
 
-    private void whoWins(Hand hand) {
+    private void whoWins(Player player) {
 
-        if (hand.getScore() > dealer.getScore() || dealer.getScore() > 21) {
-            stack.receivesBet(1);
-            Terminal.win(hand);
-        } else if (hand.getScore() == dealer.getScore()) {
-            stack.receivesBet(0);
-            Terminal.draw(hand);
+        if (player.getScore() > dealer.getScore() || dealer.getScore() > 21) {
+            player.receivesBet(1);
+            Terminal.win(player);
+        } else if (player.getScore() == dealer.getScore()) {
+            player.receivesBet(0);
+            Terminal.draw(player);
         } else {
-            stack.receivesBet((-1));
-            Terminal.lose(hand);
+            player.receivesBet((-1));
+            Terminal.lose(player);
         }
 
     }

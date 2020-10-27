@@ -3,16 +3,18 @@ package be.oddebit.objects;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Hand {
+public class Player {
 
-    private ArrayList<Card> hand = new ArrayList<Card>();
-    private final String owner;
+    private ArrayList<Card> hand = new ArrayList<>();
+    private final String name;
+    private int stack;
+    private int bet;
 
 
-    public Hand(String owner, Card... cards) {
+    public Player(String name, int stack) {
 
-        this.owner = owner;
-        this.hand.addAll(Arrays.asList(cards));
+        this.name = name;
+        this.stack = stack;
     }
 
 
@@ -20,6 +22,30 @@ public class Hand {
 
         this.hand.addAll(Arrays.asList(cards));
     }
+
+    public void receivesBet(int factor) {
+
+        this.stack += bet * factor;
+    }
+
+    public void addStack(int... stacks) {
+
+        for (int stack : stacks) {
+            this.stack += stack;
+        }
+    }
+
+    public void setBet(int bet) {
+
+        this.bet = bet;
+    }
+
+
+    public int getStack() {
+
+        return stack;
+    }
+
 
     public Card getCard(int index) {
         return hand.get(index);
@@ -65,9 +91,8 @@ public class Hand {
         return score;
     }
 
-    public String getOwner() {
-        return owner;
+    public String getName() {
+        return name;
     }
-
 
 }

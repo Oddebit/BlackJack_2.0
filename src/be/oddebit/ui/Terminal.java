@@ -1,7 +1,6 @@
 package be.oddebit.ui;
 
-import be.oddebit.objects.Hand;
-import be.oddebit.objects.BetStack;
+import be.oddebit.objects.Player;
 
 import java.util.Scanner;
 
@@ -13,15 +12,15 @@ public class Terminal {
         System.out.println("\n\n--- NEW GAME ---");
     }
 
-    public static int askBet(BetStack stack) {
+    public static int askBet(Player player) {
 
-        System.out.println("Your stack : " + stack.getStack());
+        System.out.println("Your stack : " + player.getStack());
         System.out.println("What is your bet ? (1 - 500)");
         int input = scanner.nextInt();
 
-        while (input > stack.getStack()) {
+        while (input > player.getStack()) {
 
-            System.out.println("Current stack : " + stack.getStack() + ". Do not bet more.");
+            System.out.println("Current stack : " + player.getStack() + ". Do not bet more.");
             input = scanner.nextInt();
         }
 
@@ -48,12 +47,12 @@ public class Terminal {
         System.out.println("\n- Deal -");
     }
 
-    public static void showHand(Hand hand, boolean firstOnly) {
+    public static void showHand(Player player, boolean firstOnly) {
 
         if (firstOnly) {
-            System.out.println(hand.getOwner() + " : [" + hand.getCard(0).getFace() + ", X]");
+            System.out.println(player.getName() + " : [" + player.getCard(0).getFace() + ", X]");
         } else {
-            System.out.println(hand.getOwner() + " : " + hand.getHand() + " = " + hand.getScore());
+            System.out.println(player.getName() + " : " + player.getHand() + " = " + player.getScore());
         }
     }
 
@@ -65,9 +64,9 @@ public class Terminal {
         return input == 1;
     }
 
-    public static void sayName(Hand hand) {
+    public static void sayName(Player player) {
 
-        System.out.println(hand.getOwner());
+        System.out.println(player.getName());
     }
 
     public static boolean askCard() {
@@ -78,20 +77,20 @@ public class Terminal {
         return input == 1;
     }
 
-    public static void lose(Hand hand) {
-        System.out.println(hand.getOwner() + " loses.");
+    public static void lose(Player player) {
+        System.out.println(player.getName() + " loses.");
     }
 
-    public static void draw(Hand hand) {
-        System.out.println("It is a stand-off for " + hand.getOwner() + ".");
+    public static void draw(Player player) {
+        System.out.println("It is a stand-off for " + player.getName() + ".");
     }
 
-    public static void win(Hand hand) {
-        System.out.println(hand.getOwner() + " wins.");
+    public static void win(Player player) {
+        System.out.println(player.getName() + " wins.");
     }
 
-    public static void blackJack(Hand hand) {
-        System.out.println("Black Jack for " + hand.getOwner() + "!");
+    public static void blackJack(Player player) {
+        System.out.println("Black Jack for " + player.getName() + "!");
     }
 
 }
