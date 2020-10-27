@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class Hand {
 
     private ArrayList<Card> hand = new ArrayList<Card>();
-    private String owner;
+    private final String owner;
 
 
     public Hand(String owner, Card... cards) {
@@ -68,4 +68,6 @@ public class Hand {
     public String getOwner() {
         return owner;
     }
+
+
 }

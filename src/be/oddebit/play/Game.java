@@ -2,6 +2,7 @@ package be.oddebit.play;
 
 import be.oddebit.objects.Deck;
 import be.oddebit.objects.Hand;
+import be.oddebit.objects.StackManagement;
 import be.oddebit.ui.Terminal;
 
 public class Game {
@@ -14,18 +15,25 @@ public class Game {
     Hand splitHand1;
     Hand splitHand2;
 
+    StackManagement stack;
 
-    public Game() {
+    public Game(int stack) {
+
+        this.stack = new StackManagement(stack);
 
         boolean play = true;
         while (play) {
 
             this.deck  = new Deck(6);
+
+            Terminal.sayNewGame();
+            this.stack.setBet(Terminal.askBet(this.stack));
             deal();
 
             if (player.getScore() == 21) {
 
-                Terminal.win(player);
+                this.stack.receivesBet(2);
+                Terminal.blackJack(player);
                 play = Terminal.restart();
                 continue;
             }
@@ -37,6 +45,7 @@ public class Game {
             }
 
             play = Terminal.restart();
+
         }
 
     }
@@ -134,10 +143,13 @@ public class Game {
     private void whoWins(Hand hand) {
 
         if (hand.getScore() > dealer.getScore() || dealer.getScore() > 21) {
+            stack.receivesBet(1);
             Terminal.win(hand);
         } else if (hand.getScore() == dealer.getScore()) {
+            stack.receivesBet(0);
             Terminal.draw(hand);
         } else {
+            stack.receivesBet(-1);
             Terminal.lose(hand);
         }
 
