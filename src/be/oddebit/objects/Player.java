@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 public class Player {
 
-    private ArrayList<Card> hand = new ArrayList<>();
+    private ArrayList<Card> hand;
     private final String name;
     private int stack;
     private int bet;
@@ -18,7 +18,13 @@ public class Player {
     }
 
 
-    public void receivesCard(Card... cards) {
+    public void receivesHand(Card... cards) {
+
+        this.hand = new ArrayList<>();
+        this.hand.addAll(Arrays.asList(cards));
+    }
+
+    public void receivesCards(Card... cards) {
 
         this.hand.addAll(Arrays.asList(cards));
     }
@@ -26,13 +32,6 @@ public class Player {
     public void receivesBet(int factor) {
 
         this.stack += bet * factor;
-    }
-
-    public void addStack(int... stacks) {
-
-        for (int stack : stacks) {
-            this.stack += stack;
-        }
     }
 
     public void setBet(int bet) {
@@ -51,15 +50,15 @@ public class Player {
         return hand.get(index);
     }
 
-    public ArrayList<String> getHand() {
+    public ArrayList<String> getHandFaces() {
 
-        ArrayList<String> visual = new ArrayList<>();
+        ArrayList<String> face = new ArrayList<>();
 
         for (Card card : hand) {
-            visual.add(card.getFace());
+            face.add(card.getFace());
         }
 
-        return visual;
+        return face;
     }
 
     private int getAces() {

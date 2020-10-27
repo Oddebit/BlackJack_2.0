@@ -52,7 +52,7 @@ public class Terminal {
         if (firstOnly) {
             System.out.println(player.getName() + " : [" + player.getCard(0).getFace() + ", X]");
         } else {
-            System.out.println(player.getName() + " : " + player.getHand() + " = " + player.getScore());
+            System.out.println(player.getName() + " : " + player.getHandFaces() + " = " + player.getScore());
         }
     }
 

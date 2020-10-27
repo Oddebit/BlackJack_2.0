@@ -45,8 +45,8 @@ public class Game {
 
         Terminal.sayDeal();
 
-        this.currentPlayer.receivesCard(deck.removeCard(), deck.removeCard());
-        this.dealer.receivesCard(deck.removeCard(), deck.removeCard());
+        this.currentPlayer.receivesHand(deck.removeCard(), deck.removeCard());
+        this.dealer.receivesHand(deck.removeCard(), deck.removeCard());
 
         Terminal.showHand(currentPlayer, false);
         Terminal.showHand(dealer, true);
@@ -63,17 +63,13 @@ public class Game {
 
         hitOrStand(currentPlayer);
 
-        if (currentPlayer.getScore() > 21) {
-
-            Terminal.lose(currentPlayer);
-
-        } else {
+        if (currentPlayer.getScore() <= 21) {
 
             dealerHitOrStand();
             Terminal.showHand(dealer, false);
-            whoWins(currentPlayer);
 
         }
+        whoWins(currentPlayer);
 
     }
 
@@ -89,30 +85,23 @@ public class Game {
         hitOrStand(splitHand1);
         hitOrStand(splitHand2);
 
-        if (splitHand1.getScore() > 21 && splitHand2.getScore() > 21) {
-
-            Terminal.lose(currentPlayer);
-
-        } else {
+        if (splitHand1.getScore() <= 21 || splitHand2.getScore() <= 21) {
 
             dealerHitOrStand();
             Terminal.showHand(dealer, false);
 
-            whoWins(splitHand1);
-            whoWins(splitHand2);
-
-            this.currentPlayer.addStack(splitHand1.getStack(), splitHand1.getStack());
-
         }
+        whoWins(splitHand1);
+        whoWins(splitHand2);
     }
 
     private void splitDeal() {
 
         this.splitHand1 = new Player("First split hand", 0);
-        splitHand1.receivesCard(currentPlayer.getCard(0), deck.removeCard());
+        splitHand1.receivesHand(currentPlayer.getCard(0), deck.removeCard());
 
         this.splitHand2 = new Player("Second split hand", 0);
-        splitHand2.receivesCard(currentPlayer.getCard(1), deck.removeCard());
+        splitHand2.receivesHand(currentPlayer.getCard(1), deck.removeCard());
 
         Terminal.showHand(splitHand1, false);
         Terminal.showHand(splitHand2, false);
@@ -127,7 +116,7 @@ public class Game {
         while (hit && player.getScore() < 21) {
 
             hit = Terminal.askCard();
-            if (hit) player.receivesCard(deck.removeCard());
+            if (hit) player.receivesCards(deck.removeCard());
             Terminal.showHand(player, false);
         }
 
@@ -137,21 +126,24 @@ public class Game {
 
         while (dealer.getScore() <= 16) {
 
-            dealer.receivesCard(deck.removeCard());
+            dealer.receivesCards(deck.removeCard());
         }
 
     }
 
     private void whoWins(Player player) {
 
-        if (player.getScore() > dealer.getScore() || dealer.getScore() > 21) {
-            player.receivesBet(1);
+        if (player.getScore() > 21) {
+            currentPlayer.receivesBet(-1);
+            Terminal.lose(player);
+        } else if (player.getScore() > dealer.getScore() || dealer.getScore() > 21) {
+            currentPlayer.receivesBet(1);
             Terminal.win(player);
         } else if (player.getScore() == dealer.getScore()) {
-            player.receivesBet(0);
+            currentPlayer.receivesBet(0);
             Terminal.draw(player);
         } else {
-            player.receivesBet((-1));
+            currentPlayer.receivesBet(-1);
             Terminal.lose(player);
         }
 
