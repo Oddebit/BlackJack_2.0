@@ -23,9 +23,9 @@ public class Terminal {
     public static void showHand(Hand hand, boolean firstOnly) {
 
         if (firstOnly) {
-            System.out.println(hand.getOwner() + "'s hand : [" + hand.getCard(0).getFace() + ", X]");
+            System.out.println(hand.getOwner() + " : [" + hand.getCard(0).getFace() + ", X]");
         } else {
-            System.out.println(hand.getOwner() + "'s hand : " + hand.getHand() + " = " + hand.getScore());
+            System.out.println(hand.getOwner() + " : " + hand.getHand() + " = " + hand.getScore());
         }
     }
 
@@ -36,6 +36,11 @@ public class Terminal {
         int input = scanner.nextInt();
 
         return input == 1;
+    }
+
+    public static void saySplitHand(Hand hand) {
+
+        System.out.println(hand.getOwner());
     }
 
     public static boolean askCard() {
@@ -49,15 +54,15 @@ public class Terminal {
     }
 
     public static void lose(Hand hand) {
-        System.out.println("You lose.");
+        System.out.println(hand.getOwner() + " loses.");
     }
 
     public static void draw(Hand hand) {
-        System.out.println("Stand-off.");
+        System.out.println("It is a stand-off for " + hand + ".");
     }
 
     public static void win(Hand hand) {
-        System.out.println("You win.");
+        System.out.println(hand.getOwner() + " wins.");
     }
 
 }

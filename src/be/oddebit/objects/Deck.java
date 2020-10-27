@@ -22,10 +22,10 @@ public class Deck {
     }
 
     public Card removeCard() {
- //       Random random = new Random();
- //       int index = random.nextInt(deck.size());
 
-        int index = 10;
+        Random random = new Random();
+        int index = random.nextInt(deck.size());
+
         return this.deck.remove(index);
     }
 

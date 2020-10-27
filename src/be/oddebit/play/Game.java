@@ -30,8 +30,7 @@ public class Game {
                 continue;
             }
 
-            boolean okSplit = Terminal.askSplit();
-            if (splitCondition() && okSplit) {
+            if (splitCondition() && Terminal.askSplit()) {
                 splitProcedure();
             } else {
                 procedure();
@@ -74,7 +73,7 @@ public class Game {
 
     private boolean splitCondition() {
 
-        return player.getCard(0) == player.getCard(1);
+        return player.getCard(0).getFace().equals(player.getCard(1).getFace());
     }
 
     private void splitProcedure() {
@@ -101,8 +100,8 @@ public class Game {
 
     private void splitDeal() {
 
-        this.splitHand1 = new Hand("(1) Player", player.getCard(0), deck.removeCard());
-        this.splitHand2 = new Hand("(2) Player", player.getCard(1), deck.removeCard());
+        this.splitHand1 = new Hand("First split hand", player.getCard(0), deck.removeCard());
+        this.splitHand2 = new Hand("Second split hand", player.getCard(1), deck.removeCard());
 
         Terminal.showHand(splitHand1, false);
         Terminal.showHand(splitHand2, false);
@@ -112,6 +111,7 @@ public class Game {
 
     private void hitOrStand(Hand hand) {
 
+        Terminal.saySplitHand(hand);
         boolean hit = true;
         while (hit && hand.getScore() < 21) {
 
