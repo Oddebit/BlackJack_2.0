@@ -1,11 +1,16 @@
 package be.oddebit.play;
 
-import be.oddebit.play.Game;
+import be.oddebit.objects.Player;
+import be.oddebit.ui.Terminal;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        new Game(5000);
+        Terminal.sayWelcome();
+        Player player = new Player(Terminal.askName());
+        player.setStack(Terminal.askStack(player));
+
+        new Game(player);
     }
 }

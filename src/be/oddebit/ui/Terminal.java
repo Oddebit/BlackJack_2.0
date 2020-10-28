@@ -8,14 +8,38 @@ public class Terminal {
 
     static Scanner scanner = new Scanner(System.in);
 
+    public static void sayWelcome() {
+
+        System.out.println("\nWelcome to BLACK JACK 2.0!\n");
+    }
+
+    public static String askName() {
+
+        System.out.println("My name is Jack.\nWhat is yours?");
+        String input = scanner.nextLine();
+        System.out.println("\nPleasure to meet you, sir.");
+        return input;
+
+    }
+
+    public static int askStack(Player player) {
+
+        System.out.println("What is the stack you want to start with?");
+        int input = scanner.nextInt();
+        System.out.println("\nAlright. Good luck, " + player.getName() + "!");
+
+        return input;
+    }
+
     public static void sayNewGame() {
-        System.out.println("\n\n--- NEW GAME ---");
+
+        System.out.println("\n--- NEW GAME ---");
     }
 
     public static int askBet(Player player) {
 
         System.out.println("Your stack : " + player.getStack());
-        System.out.println("What is your bet ? (1 - 500)");
+        System.out.println("What is your bet?");
         int input = scanner.nextInt();
 
         while (input > player.getStack()) {
@@ -36,7 +60,7 @@ public class Terminal {
 
     public static boolean askRestart() {
 
-        System.out.println("Press '1' to restart.");
+        System.out.println("\nPress '1' to restart.");
         int input = scanner.nextInt();
 
         return input == 1;
@@ -71,22 +95,22 @@ public class Terminal {
 
     public static boolean askCard() {
 
-        System.out.println("Hit (1) or Stand(2) ?");
+        System.out.println("\nHit (1) or Stand(2)?");
         int input = scanner.nextInt();
 
         return input == 1;
     }
 
     public static void lose(Player player) {
-        System.out.println(player.getName() + " loses.");
+        System.out.println("\n" + player.getName() + " loses.");
     }
 
     public static void draw(Player player) {
-        System.out.println("It is a stand-off for " + player.getName() + ".");
+        System.out.println("\nIt is a stand-off for " + player.getName() + ".");
     }
 
     public static void win(Player player) {
-        System.out.println(player.getName() + " wins.");
+        System.out.println("\n" + player.getName() + " wins.");
     }
 
     public static void blackJack(Player player) {

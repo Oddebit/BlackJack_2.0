@@ -8,16 +8,16 @@ public class Game {
 
     Deck deck;
 
-    public Player currentPlayer;
+    Player currentPlayer;
     Player dealer;
 
     Player splitHand1;
     Player splitHand2;
 
-    public Game(int stack) {
+    public Game(Player player) {
 
-        this.currentPlayer = new Player("Player", stack);
-        this.dealer = new Player("Dealer", 0);
+        this.currentPlayer = player;
+        this.dealer = new Player("Dealer");
 
         boolean play = true;
         while (play) {
@@ -57,7 +57,6 @@ public class Game {
 
         if (currentPlayer.getScore() == 21) {
 
-            this.currentPlayer.receivesBet(2);
             Terminal.blackJack(currentPlayer);
         }
 
@@ -82,7 +81,10 @@ public class Game {
 
         splitDeal();
 
+        Terminal.sayName(splitHand1);
         hitOrStand(splitHand1);
+
+        Terminal.sayName(splitHand2);
         hitOrStand(splitHand2);
 
         if (splitHand1.getScore() <= 21 || splitHand2.getScore() <= 21) {
@@ -97,10 +99,10 @@ public class Game {
 
     private void splitDeal() {
 
-        this.splitHand1 = new Player("First split hand", 0);
+        this.splitHand1 = new Player("First split hand");
         splitHand1.receivesHand(currentPlayer.getCard(0), deck.removeCard());
 
-        this.splitHand2 = new Player("Second split hand", 0);
+        this.splitHand2 = new Player("Second split hand");
         splitHand2.receivesHand(currentPlayer.getCard(1), deck.removeCard());
 
         Terminal.showHand(splitHand1, false);
@@ -111,7 +113,6 @@ public class Game {
 
     private void hitOrStand(Player player) {
 
-        Terminal.sayName(player);
         boolean hit = true;
         while (hit && player.getScore() < 21) {
 
@@ -134,17 +135,29 @@ public class Game {
     private void whoWins(Player player) {
 
         if (player.getScore() > 21) {
+
             currentPlayer.receivesBet(-1);
             Terminal.lose(player);
+
         } else if (player.getScore() > dealer.getScore() || dealer.getScore() > 21) {
-            currentPlayer.receivesBet(1);
-            Terminal.win(player);
+
+            if (player.getScore() == 21) {
+                currentPlayer.receivesBet(2);
+            } else {
+                currentPlayer.receivesBet(1);
+                Terminal.win(player);
+            }
+
         } else if (player.getScore() == dealer.getScore()) {
+
             currentPlayer.receivesBet(0);
             Terminal.draw(player);
+
         } else {
+
             currentPlayer.receivesBet(-1);
             Terminal.lose(player);
+
         }
 
     }

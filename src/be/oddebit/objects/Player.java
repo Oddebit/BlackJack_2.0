@@ -11,12 +11,16 @@ public class Player {
     private int bet;
 
 
-    public Player(String name, int stack) {
+    public Player(String name) {
 
         this.name = name;
-        this.stack = stack;
     }
 
+
+    public void setStack(int stack) {
+
+        this.stack = stack;
+    }
 
     public void receivesHand(Card... cards) {
 
