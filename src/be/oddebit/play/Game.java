@@ -20,7 +20,7 @@ public class Game {
         this.dealer = new Player("Dealer");
 
         boolean play = true;
-        while (play) {
+        while (play && currentPlayer.getStack() > 0) {
 
             this.deck = new Deck(6);
 
@@ -38,6 +38,10 @@ public class Game {
             play = Terminal.askRestart();
 
         }
+
+        if (!play) Terminal.sayBye(currentPlayer);
+
+        if (currentPlayer.getStack() <= 0) Terminal.sayBroke(currentPlayer);
 
     }
 
@@ -143,6 +147,7 @@ public class Game {
 
             if (player.getScore() == 21) {
                 currentPlayer.receivesBet(2);
+                Terminal.win(player);
             } else {
                 currentPlayer.receivesBet(1);
                 Terminal.win(player);

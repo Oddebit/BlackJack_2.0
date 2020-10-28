@@ -8,6 +8,7 @@ public class Terminal {
 
     static Scanner scanner = new Scanner(System.in);
 
+
     public static void sayWelcome() {
 
         System.out.println("\nWelcome to BLACK JACK 2.0!\n");
@@ -26,7 +27,7 @@ public class Terminal {
 
         System.out.println("What is the stack you want to start with?");
         int input = scanner.nextInt();
-        System.out.println("\nAlright. Good luck, " + player.getName() + "!");
+        System.out.println("\nThere you go. Good luck, " + player.getName() + "!");
 
         return input;
     }
@@ -82,8 +83,9 @@ public class Terminal {
 
     public static boolean askSplit() {
 
-        System.out.println("Split? Yes (1) or No (2)?");
+        System.out.println("\nSplit? Yes (1) or No (2)?");
         int input = scanner.nextInt();
+        System.out.println();
 
         return input == 1;
     }
@@ -97,6 +99,7 @@ public class Terminal {
 
         System.out.println("\nHit (1) or Stand(2)?");
         int input = scanner.nextInt();
+        System.out.println();
 
         return input == 1;
     }
@@ -114,7 +117,15 @@ public class Terminal {
     }
 
     public static void blackJack(Player player) {
-        System.out.println("Black Jack for " + player.getName() + "!");
+        System.out.println("\nBlack Jack for " + player.getName() + "!");
     }
+
+    public static void sayBye(Player player) {
+        System.out.println("\nAlright, " + player.getName() + ". See you later!");
+    }
+    public static void sayBroke(Player player) {
+        System.out.println("\nNo chips left... But I hope to see you soon, " + player.getName() + "!");
+    }
+
 
 }
