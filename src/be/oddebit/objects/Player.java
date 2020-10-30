@@ -14,18 +14,13 @@ public class Player {
     public Player(String name) {
 
         this.name = name;
+        this.hand = new ArrayList<>();
     }
 
 
     public void setStack(int stack) {
 
         this.stack = stack;
-    }
-
-    public void receivesHand(Card... cards) {
-
-        this.hand = new ArrayList<>();
-        this.hand.addAll(Arrays.asList(cards));
     }
 
     public void receivesCards(Card... cards) {
@@ -43,12 +38,14 @@ public class Player {
         this.bet = bet;
     }
 
+    public void clearHand() {
+        this.hand.clear();;
+    }
 
     public int getStack() {
 
         return stack;
     }
-
 
     public Card getCard(int index) {
         return hand.get(index);
